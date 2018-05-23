@@ -17,6 +17,7 @@ import java.util.ArrayList;
  */
 public class Conexion{
     
+    private PreparedStatement st;
     private ResultSet resultado;
     private Connection conexion;
     public static ArrayList<Coche> coches=new ArrayList();
@@ -43,7 +44,7 @@ public class Conexion{
     public void insertarCoche(Coche coche){
         connect();
         try{
-            PreparedStatement st=conexion.prepareStatement("insert into coches values('"+coche.getMatricula()+"'"
+            st=conexion.prepareStatement("insert into coches values('"+coche.getMatricula()+"'"
                     +","+"'"+coche.getMarca()+"'"
                     +","+"'"+coche.getMotor()+"'"+");");
             
@@ -60,7 +61,7 @@ public class Conexion{
         connect();
         
         try{
-            PreparedStatement st=conexion.prepareStatement("select * from coches");
+            st=conexion.prepareStatement("select * from coches");
             resultado=st.executeQuery();
             coches.clear();
             
@@ -81,10 +82,24 @@ public class Conexion{
         connect();
         
         try{
-            PreparedStatement st=conexion.prepareStatement("DELETE FROM coches WHERE matricula='"+coche.getMatricula()+"'");
+            st=conexion.prepareStatement("DELETE FROM coches WHERE matricula='"+coche.getMatricula()+"'");
             st.executeUpdate();
         }catch(SQLException ex){
             System.out.println("Error al eliminar el elemento");
+        }
+        recibirCoches();
+        close();
+    }
+    
+    public void actualizarCoche(Coche coche,Coche coche2){
+        connect();
+        
+        try{  
+            st=conexion.prepareStatement("update coches set matricula="+"'"+coche2.getMatricula()+"'"+", marca="+"'"+coche2.getMarca()+"'"+", motor="+"'"+coche2.getMotor()+"'"+" where matricula="+"'"+coche.getMatricula()+"'"+";");
+            st.executeUpdate(); 
+            
+        }catch(SQLException ex){
+            System.out.println("Error al actualizar la tabla");
         }
         recibirCoches();
         close();
