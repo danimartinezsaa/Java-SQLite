@@ -326,6 +326,10 @@ public class Ventana extends javax.swing.JFrame{
         
         conexion.actualizarCoche(editar, nuevo);
         mostrarBase();
+        
+        jmatriculae.setText("");
+        jmarcae.setText("");
+        jmotore.setText("");
     }//GEN-LAST:event_baceptarActionPerformed
 
     /**
