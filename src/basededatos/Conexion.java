@@ -104,4 +104,20 @@ public class Conexion{
         recibirCoches();
         close();
     }
+    
+    public void buscarCoche(String busqueda){
+        connect();
+        try{
+            st=conexion.prepareStatement("select * from coches where matricula="+"'"+busqueda+"'"+" or "+"marca="+"'"+busqueda+"'"+" or "+"motor="+"'"+busqueda+"'"+";");
+            resultado=st.executeQuery();
+            coches.clear();
+            while(resultado.next()){
+                coches.add(new Coche(resultado.getString("matricula"),resultado.getString("marca"),resultado.getString("motor")));
+            }
+        }catch(SQLException ex){
+            System.out.println("Error al buscar");
+        }
+        
+        close();
+    }
 }

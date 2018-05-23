@@ -17,7 +17,6 @@ public class Ventana extends javax.swing.JFrame{
     DefaultTableModel tabla=new DefaultTableModel();
     Conexion conexion=new Conexion();
     boolean vista=true; //True si estamos viendo todo, false si vemos encontrados.
-    ArrayList<Coche> encontrados=new ArrayList();
     Coche editar;
 
     public Ventana(){
@@ -272,48 +271,30 @@ public class Ventana extends javax.swing.JFrame{
         String busqueda=jbuscar.getText();
 
         if(busqueda.equals("")){
+            conexion.recibirCoches();
             mostrarBase();
         }else{
-
-            encontrados.clear();
-
-            for(Coche elemento : conexion.coches){
-                if(busqueda.equals(elemento.getMarca())||busqueda.equals(elemento.getMatricula())||busqueda.equals(elemento.getMotor())){
-                    encontrados.add(elemento);
-
-                }
-            }
-
-            mostrarEncontrados();
+            conexion.buscarCoche(busqueda);
+            mostrarBase();
         }
     }//GEN-LAST:event_bbuscarActionPerformed
 
     private void bborrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bborrarActionPerformed
         int seleccionado=tbase.getSelectedRow();
 
-        if(vista==true){
-            if(seleccionado>=0){
-                Coche borrar=conexion.coches.get(seleccionado);
-                conexion.borrarCoche(borrar);
-                mostrarBase();
-            }
-        }else{
-            Coche eliminar=encontrados.get(seleccionado);
-            conexion.borrarCoche(eliminar);
+        if(seleccionado>=0){
+            Coche borrar=conexion.coches.get(seleccionado);
+            conexion.borrarCoche(borrar);
             mostrarBase();
         }
+
 
     }//GEN-LAST:event_bborrarActionPerformed
 
     private void beditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_beditarActionPerformed
         int fila=tbase.getSelectedRow();
 
-        
-        if(vista==true){
-            editar=Conexion.coches.get(fila);
-        }else{
-            editar=encontrados.get(fila);
-        }
+        editar=conexion.coches.get(fila);
 
         jmatriculae.setText(editar.getMatricula());
         jmarcae.setText(editar.getMarca());
@@ -322,11 +303,11 @@ public class Ventana extends javax.swing.JFrame{
     }//GEN-LAST:event_beditarActionPerformed
 
     private void baceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_baceptarActionPerformed
-        Coche nuevo=new Coche(jmatriculae.getText(),jmarcae.getText(),jmotore.getText());
-        
+        Coche nuevo=new Coche(jmatriculae.getText(), jmarcae.getText(), jmotore.getText());
+
         conexion.actualizarCoche(editar, nuevo);
         mostrarBase();
-        
+
         jmatriculae.setText("");
         jmarcae.setText("");
         jmotore.setText("");
@@ -416,20 +397,5 @@ public class Ventana extends javax.swing.JFrame{
         }
         vista=true;
         this.tbase.setModel(tabla);
-    }
-
-    public void mostrarEncontrados(){
-
-        borrarTabla();
-
-        for(Coche elemento : encontrados){
-            String anadir[]=new String[3];
-            anadir[0]=elemento.getMatricula();
-            anadir[1]=elemento.getMarca();
-            anadir[2]=elemento.getMotor();
-            tabla.addRow(anadir);
-        }
-        vista=false;
-        tbase.setModel(tabla);
     }
 }
