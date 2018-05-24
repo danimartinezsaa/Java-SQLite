@@ -7,7 +7,6 @@ public class Ventana extends javax.swing.JFrame{
 
     DefaultTableModel tabla=new DefaultTableModel();
     Conexion conexion=new Conexion();
-    boolean vista=true; //True si estamos viendo todo, false si vemos encontrados.
     Coche editar;
 
     public Ventana(){
@@ -381,7 +380,6 @@ public class Ventana extends javax.swing.JFrame{
             anadir[2]=elemento.getMotor();
             tabla.addRow(anadir);
         }
-        vista=true;
         this.tbase.setModel(tabla);
     }
 }
