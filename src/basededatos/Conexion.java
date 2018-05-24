@@ -10,19 +10,18 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+
 /**
  *
  * @author dani
  */
 public class Conexion{
-    
-    private PreparedStatement st;
-    private ResultSet resultado;
-    private Connection conexion;
-    public static ArrayList<Coche> coches=new ArrayList();
-    
-    public void connect(){
+
+    private static PreparedStatement st;
+    private static ResultSet resultado;
+    private static Connection conexion;
+
+    public static void connect(){
         try{
             conexion=DriverManager.getConnection("jdbc:sqlite:"+"Base.db");
             if(conexion!=null){
@@ -32,92 +31,83 @@ public class Conexion{
             System.out.println("Error de conexión a la base de datos");
         }
     }
-    
-    public void close(){
+
+    public static void close(){
         try{
             conexion.close();
         }catch(SQLException ex){
             System.out.println("Error al cerrar la base de datos");
         }
     }
-    
-    public void insertarCoche(Coche coche){
+
+    public static void insert(Coche coche){
         connect();
         try{
             st=conexion.prepareStatement("insert into coches values('"+coche.getMatricula()+"'"
                     +","+"'"+coche.getMarca()+"'"
                     +","+"'"+coche.getMotor()+"'"+");");
-            
+
             st.execute();
-            recibirCoches();
+            
         }catch(SQLException ex){
             System.out.println("Error al insertar en la base de datos.");
         }
         close();
     }
-    
-    public void recibirCoches(){
-        
+
+    public static ResultSet select(){
+
         connect();
-        
+
         try{
             st=conexion.prepareStatement("select * from coches");
             resultado=st.executeQuery();
-            coches.clear();
-            
-            while(resultado.next()){
-                coches.add(new Coche(resultado.getString("matricula"),resultado.getString("marca"),resultado.getString("motor")));
-            }
 
-            resultado.close();
-            
+
         }catch(SQLException ex){
             System.out.println("Error al ejecutar la consulta");
         }
-        
-        close();
+        return resultado;
     }
-    
-    public void borrarCoche(Coche coche){
+
+    public static void delete(Coche coche){
         connect();
-        
+
         try{
             st=conexion.prepareStatement("DELETE FROM coches WHERE matricula='"+coche.getMatricula()+"'");
             st.executeUpdate();
         }catch(SQLException ex){
             System.out.println("Error al eliminar el elemento");
         }
-        recibirCoches();
+        select();
         close();
     }
-    
-    public void actualizarCoche(Coche coche,Coche coche2){
+
+    public static void update(Coche coche, Coche coche2){
         connect();
-        
-        try{  
-            st=conexion.prepareStatement("update coches set matricula="+"'"+coche2.getMatricula()+"'"+", marca="+"'"+coche2.getMarca()+"'"+", motor="+"'"+coche2.getMotor()+"'"+" where matricula="+"'"+coche.getMatricula()+"'"+";");
-            st.executeUpdate(); 
-            
+
+        try{
+            st=conexion.prepareStatement("update coches set matricula="
+                    +"'"+coche2.getMatricula()+"'"
+                    +", marca="+"'"+coche2.getMarca()+"'"+", motor="+"'"+coche2.getMotor()+"'"
+                    +" where matricula="+"'"+coche.getMatricula()+"'"+";");
+            st.executeUpdate();
+
         }catch(SQLException ex){
             System.out.println("Error al actualizar la tabla");
         }
-        recibirCoches();
+        select();
         close();
     }
-    
-    public void buscarCoche(String busqueda){
+
+    public static ResultSet selectWhere(String busqueda){
         connect();
         try{
             st=conexion.prepareStatement("select * from coches where matricula="+"'"+busqueda+"'"+" or "+"marca="+"'"+busqueda+"'"+" or "+"motor="+"'"+busqueda+"'"+";");
             resultado=st.executeQuery();
-            coches.clear();
-            while(resultado.next()){
-                coches.add(new Coche(resultado.getString("matricula"),resultado.getString("marca"),resultado.getString("motor")));
-            }
         }catch(SQLException ex){
             System.out.println("Error al buscar");
         }
-        
-        close();
+        return resultado;
     }
 }

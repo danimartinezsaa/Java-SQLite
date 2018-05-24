@@ -44,7 +44,7 @@ public class Coche{
     
     public void guardar(){
         Conexion conexion=new Conexion();
-        conexion.insertarCoche(this);
+        conexion.insert(this);
     }
 
     @Override
