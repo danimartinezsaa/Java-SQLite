@@ -2,13 +2,18 @@
 package basededatos;
 
 import javax.swing.table.DefaultTableModel;
-
+/**
+ * Interfaz gráfica para visualizar el contenido de la base de datos y actualizar sus campos, como eliminar, añadir, buscar o actualizar.
+ * @author dani
+ */
 public class Ventana extends javax.swing.JFrame{
 
     DefaultTableModel tabla=new DefaultTableModel();
     Conexion conexion=new Conexion();
     Coche editar;
-
+/**
+ * Constructor que inicializa la tabla con sus tres campos y le añade los valores de la tabla de la base de datos.
+ */
     public Ventana(){
         initComponents();
         tabla.addColumn("Matrícula");
@@ -240,7 +245,10 @@ public class Ventana extends javax.swing.JFrame{
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+/**
+ * Botón para añadir un coche nuevo, recoge los datos del formulario de Añadir.
+ * @param evt 
+ */
     private void banadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_banadirActionPerformed
         String matricula, marca, motor;
 
@@ -251,7 +259,10 @@ public class Ventana extends javax.swing.JFrame{
         Metodos.insertarCoche(new Coche(matricula, marca, motor));
         mostrarBase();
     }//GEN-LAST:event_banadirActionPerformed
-
+/**
+ * Botón para realizar una búsqueda en la base de datos, recoge texto del campo de búsqueda.
+ * @param evt 
+ */
     private void bbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bbuscarActionPerformed
         String busqueda=jbuscar.getText();
 
@@ -263,7 +274,10 @@ public class Ventana extends javax.swing.JFrame{
             mostrarBase();
         }
     }//GEN-LAST:event_bbuscarActionPerformed
-
+/**
+ * Botón para borrar un elemento de la base de datos seleccionado en la tabla.
+ * @param evt 
+ */
     private void bborrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bborrarActionPerformed
         int seleccionado=tbase.getSelectedRow();
 
@@ -275,7 +289,10 @@ public class Ventana extends javax.swing.JFrame{
 
 
     }//GEN-LAST:event_bborrarActionPerformed
-
+/**
+ * Botón que saca los datos de una fila seleccionada en la tabla al formulario de edición.
+ * @param evt 
+ */
     private void beditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_beditarActionPerformed
         int fila=tbase.getSelectedRow();
 
@@ -286,7 +303,10 @@ public class Ventana extends javax.swing.JFrame{
         jmotore.setText(editar.getMotor());
 
     }//GEN-LAST:event_beditarActionPerformed
-
+/**
+ * Botón para aceptar los cambios en un Objeto de la tabla.
+ * @param evt 
+ */
     private void baceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_baceptarActionPerformed
         Coche nuevo=new Coche(jmatriculae.getText(), jmarcae.getText(), jmotore.getText());
 
@@ -360,7 +380,9 @@ public class Ventana extends javax.swing.JFrame{
     private javax.swing.JTextField jmotore;
     private javax.swing.JTable tbase;
     // End of variables declaration//GEN-END:variables
-
+/**
+ * Método que borra el contenido de la tabla.
+ */
     public void borrarTabla(){
         for(int i=0; i<tabla.getRowCount(); i++){
             tabla.removeRow(i);
@@ -368,7 +390,9 @@ public class Ventana extends javax.swing.JFrame{
         }
         tbase.setModel(tabla);
     }
-
+/**
+ * Método que muestra todo el contenido del ArrayList Metodos.Coches en dónde está la información de las consultas a mostrar.
+ */
     public void mostrarBase(){
 
         borrarTabla();
