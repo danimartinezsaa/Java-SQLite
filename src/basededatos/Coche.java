@@ -6,7 +6,7 @@
 package basededatos;
 
 /**
- *
+ * Clase para Objetos de Tipo Coche, con su constructor, getters y setters
  * @author dani
  */
 public class Coche{
