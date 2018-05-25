@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package basededatos;
 
 import java.sql.Connection;
@@ -12,15 +8,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- *
- * @author dani
+ * Clase modelo con los métodos de conexión, cerrado y consultas o actualizaciones de una base de datos sqlite.
  */
 public class Conexion{
 
     private static PreparedStatement st;
     private static ResultSet resultado;
     private static Connection conexion;
-
+/**
+ * Método para conectarse a la base de datos.
+ */
     public static void connect(){
         try{
             conexion=DriverManager.getConnection("jdbc:sqlite:"+"Base.db");
@@ -31,7 +28,9 @@ public class Conexion{
             System.out.println("Error de conexión a la base de datos");
         }
     }
-
+/**
+ * Método para cerrar la base de datos
+ */
     public static void close(){
         try{
             conexion.close();
@@ -39,7 +38,10 @@ public class Conexion{
             System.out.println("Error al cerrar la base de datos");
         }
     }
-
+/**
+ * Método para realizar una inserción en la base de datos de un nuevo elemento.
+ * @param coche Objeto a introducir en la base de datos.
+ */
     public static void insert(Coche coche){
         connect();
         try{
@@ -54,7 +56,10 @@ public class Conexion{
         }
         close();
     }
-
+/**
+ * Método para realizar una consulta de todos los elementos de la tabla Coches
+ * @return Resultado de la consulta
+ */
     public static ResultSet select(){
 
         connect();
@@ -69,7 +74,10 @@ public class Conexion{
         }
         return resultado;
     }
-
+/**
+ * Método para borrar un elemento concreto de la tabla coches.
+ * @param coche Elemento a eliminar.
+ */
     public static void delete(Coche coche){
         connect();
 
@@ -82,7 +90,11 @@ public class Conexion{
         select();
         close();
     }
-
+/**
+ * Método para actualizar un elemento de la tabla coches
+ * @param coche Elemento a actualizar.
+ * @param coche2 Nuevo elemento a introducir en el lugar de coche.
+ */
     public static void update(Coche coche, Coche coche2){
         connect();
 
@@ -99,7 +111,11 @@ public class Conexion{
         select();
         close();
     }
-
+/**
+ * Método para realizar una consulta condicionada por una búsqueda, si algún campo del Objeto coincide con el String que recibe.
+ * @param busqueda String por el cuál se va a buscar el elemento.
+ * @return Resultado de la consulta
+ */
     public static ResultSet selectWhere(String busqueda){
         connect();
         try{
