@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package basededatos;
 
 import java.sql.ResultSet;
@@ -11,18 +7,23 @@ import java.util.ArrayList;
 
 
 /**
- *
+ *Método Controlador con métodos que conectan con los métodos de la clase Modelo que ejecutan las consultas SQL.
  * @author dani
  */
 public class Metodos{
 
     public static ArrayList<Coche> coches=new ArrayList();
-
+/**
+ * Método para insertar un nuevo elemento Coche en la base de datos.
+ * @param coche Objeto a insertar
+ */
     public static void insertarCoche(Coche coche){
         Conexion.insert(coche);
         verCoches();
     }
-
+/**
+ * Método que hace una consulta en la base de datos e introduce el resultado en el ArrayList coches.
+ */
     public static void verCoches(){
 
         try{
@@ -40,17 +41,27 @@ public class Metodos{
         }
         Conexion.close();
     }
-
+/**
+ * Método para eliminar un Objeto coches de la base de datos.
+ * @param coche Objeto a eliminar.
+ */
     public static void eliminarCoche(Coche coche){
         Conexion.delete(coche);
         verCoches();
     }
-
+/**
+ * Método que modifica un Objeto de la tabla Coches.
+ * @param coche1 Objeto a modificar.
+ * @param coche2 Nuevo objeto tipo Coche que sustituye al anterior.
+ */
     public static void modificarCoche(Coche coche1, Coche coche2){
         Conexion.update(coche1, coche2);
         verCoches();
     }
-
+/**
+ * Método para buscar un coche en concreto por cualquiera de sus atributos.
+ * @param busqueda Texto con la búsqueda a realizar en la base de datos.
+ */
     public static void buscarCoche(String busqueda){
         try{
             ResultSet rs=Conexion.selectWhere(busqueda);
